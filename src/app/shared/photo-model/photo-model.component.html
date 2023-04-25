@@ -1,0 +1,21 @@
+  <div class="imagen col-12">
+    <div class="card">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title">{{ photo.title }}</h5>
+          <a class="navigation-link logo">
+            <span class="no-font me-1">{{ photo.likes }}</span>
+            <i class="far fa-heart"></i>
+          </a>
+        </div>
+        <p class="card-text">
+          {{ photo.description }}
+        </p>
+      </div>
+    </div>
+  </div>

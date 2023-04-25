@@ -16,12 +16,15 @@ export class UserService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     })
   }
 
-  getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(this.apiURL)
+  // TODO Arreglar
+
+  getAll(): Observable<User> {
+    return this.httpClient.get<User>(this.apiURL)
     .pipe(
       catchError(this.errorHandler)
     );
@@ -48,9 +51,17 @@ export class UserService {
     )
   }
 
+  findByNickname(nickname: string): Observable<User> {
+    return this.httpClient.get<User>(this.apiURL + 'get-user/' + nickname, this.httpOptions)
+    .pipe (
+      catchError(this.errorHandler)
+    );
+  }
+
   delete(id: number) {
     return this.httpClient.delete(this.apiURL + id, this.httpOptions)
-    .pipe(catchError(this.errorHandler)
+    .pipe(
+      catchError(this.errorHandler)
     );
   }
 
