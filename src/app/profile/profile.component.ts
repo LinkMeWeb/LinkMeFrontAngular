@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { User } from '../shared/model/user.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { ModalEditProfileComponent } from '../shared/modal-edit-profile/modal-edit-profile.component';
 
 @Component({
   selector: 'app-profile',
@@ -15,14 +17,33 @@ export class ProfileComponent implements OnInit {
   nickname: string;
   user: User;
   owner: boolean = false;
+  bsModalRef?: BsModalRef;
+  title: string = "Editar Perfil"
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: BsModalService
   ) {
     this.nickname = this.route.snapshot.params['nickname'];
+  }
+
+  openModalWithComponent() {
+    const initialState: ModalOptions = {
+      class: 'modal-dialog-centered',
+      initialState: {
+        title: this.title,
+        id: this.user.id
+      }
+    };
+    this.bsModalRef = this.modalService.show(ModalEditProfileComponent, initialState);
+    this.bsModalRef.content.closeBtnName = 'Close';
+    this.bsModalRef.onHidden.subscribe(() => {
+      if (this.bsModalRef.content.save === true) {
+        this.findOwnerUser();
+      }
+    })
   }
 
   ngOnInit() {

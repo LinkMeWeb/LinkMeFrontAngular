@@ -9,10 +9,13 @@ import { SearchBarComponent } from './shared/search-bar/search-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './main/main.component';
 import { PhotoComponent } from './photo/photo.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './access/login/login.component';
+import { RegisterComponent } from './access/register/register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PhotoModelComponent } from './shared/photo-model/photo-model.component';
+import { ModalEditProfileComponent } from './shared/modal-edit-profile/modal-edit-profile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule } from 'ngx-bootstrap/modal';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,14 +25,18 @@ import { PhotoModelComponent } from './shared/photo-model/photo-model.component'
     PhotoComponent,
     LoginComponent,
     RegisterComponent,
-    PhotoModelComponent
+    PhotoModelComponent,
+    ModalEditProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    ModalModule.forRoot(),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

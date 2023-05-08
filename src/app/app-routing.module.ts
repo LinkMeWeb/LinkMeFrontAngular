@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './profile/profile.component';
 import { MainComponent } from './main/main.component';
 import { PhotoComponent } from './photo/photo.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './access/login/login.component';
 import { UserGuard } from './shared/guards/user.guard';
+import { RegisterComponent } from './access/register/register.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [UserGuard]
+
   },
   {
     path: 'profile/:id/photo/:idPhoto',

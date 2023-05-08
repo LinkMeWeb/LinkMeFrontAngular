@@ -14,7 +14,9 @@ export class MainComponent implements OnInit {
 
   constructor(
     private photoService: PhotoService,
+    private appComponent: AppComponent
   ) {
+    this.appComponent.showNavbar = true;
   }
 
   ngOnInit(): void {

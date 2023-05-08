@@ -21,8 +21,6 @@ export class UserService {
     })
   }
 
-  // TODO Arreglar
-
   getAll(): Observable<User> {
     return this.httpClient.get<User>(this.apiURL)
     .pipe(
@@ -37,9 +35,8 @@ export class UserService {
     );
   }
 
-  // TODO comprobar que no necesita pasarle la id
   update(user: User): Observable<User> {
-    return this.httpClient.put<User>(this.apiURL + user.id, JSON.stringify(user), this.httpOptions)
+    return this.httpClient.patch<User>(this.apiURL + 'update-profile/' + user.id, JSON.stringify(user), this.httpOptions)
     .pipe(catchError(this.errorHandler)
     )
   }
@@ -54,6 +51,13 @@ export class UserService {
   findByNickname(nickname: string): Observable<User> {
     return this.httpClient.get<User>(this.apiURL + 'get-user/' + nickname, this.httpOptions)
     .pipe (
+      catchError(this.errorHandler)
+    );
+  }
+
+  emailExists(email: string): Observable<Boolean> {
+    return this.httpClient.get<Boolean>(this.apiURL + 'check-email/' + email, this.httpOptions)
+    .pipe(
       catchError(this.errorHandler)
     );
   }
