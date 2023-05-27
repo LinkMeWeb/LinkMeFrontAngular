@@ -1,0 +1,38 @@
+/* .hide-scrollbar {
+    scrollbar-width: none;
+} */
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.modal-xl {
+    max-width: 1300px;
+}
+
+/* .cut-text { 
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  width: 160px; 
+  height: 1.2em; 
+  white-space: nowrap;
+} */
+
+.cut-text{
+    background:red;
+    height:60px;
+    width:500px;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+}
+
+.liked {
+  color: red;
+}

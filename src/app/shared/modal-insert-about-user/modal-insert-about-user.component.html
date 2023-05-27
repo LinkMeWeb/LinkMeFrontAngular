@@ -1,0 +1,22 @@
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{ title }}</h4>
+  </div>
+  <div class="modal-body">
+
+    <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()" id="aboutForm">
+      <div class="mb-3">
+        <label for="name" class="form-label">Sobre mi</label>
+          <textarea class="form-control" aria-label="With textarea" formControlName="aboutMe"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Imagen de Perfil</label>
+        <input class="form-control" type="file" id="formFile" (change)="getFile($event)">
+      </div>
+
+    </form>
+  </div>
+  
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="aboutForm">Guardar</button>
+  </div>

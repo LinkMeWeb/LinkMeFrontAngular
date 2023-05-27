@@ -30,6 +30,13 @@ export class AuthService {
     );
   }
 
+  logout() {
+    return this.httpClient.get(this.apiURL + 'logout', this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
   getOwnUser(): Observable<any> {
     return this.httpClient.get<any>(this.apiURL + 'user-profile', this.httpOptions)
     .pipe(

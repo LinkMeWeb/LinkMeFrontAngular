@@ -2,5 +2,5 @@
   width: 100%;
 }
 .comment-box {
-  height: 450px;
+  border: 1px black solid;
 }

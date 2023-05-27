@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { User } from '../shared/model/user.interface';
+import { UserUpdate } from '../shared/model/user-update';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class UserService {
   ) { }
 
   private apiURL = 'http://localhost/api/user/';
+  private apiURLVoid = 'http://localhost/api/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -21,22 +23,29 @@ export class UserService {
     })
   }
 
-  getAll(): Observable<User> {
-    return this.httpClient.get<User>(this.apiURL)
+  getAll(): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.apiURLVoid + 'users')
     .pipe(
       catchError(this.errorHandler)
     );
+  }
+
+  getAllByParams(params) {
+    return this.httpClient.post<User[]>(this.apiURLVoid + 'users/params', params, this.httpOptions).
+    pipe(
+      catchError(this.errorHandler)
+    )
   }
 
   create(user: User): Observable<User> {
-    return this.httpClient.post<User>(this.apiURL, JSON.stringify(user), this.httpOptions)
+    return this.httpClient.post<User>(this.apiURLVoid + 'user-create', JSON.stringify(user), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );
   }
 
-  update(user: User): Observable<User> {
-    return this.httpClient.patch<User>(this.apiURL + 'update-profile/' + user.id, JSON.stringify(user), this.httpOptions)
+  update(user: User | UserUpdate): Observable<User> {
+    return this.httpClient.patch<User>(this.apiURL + 'update-profile', JSON.stringify(user), this.httpOptions)
     .pipe(catchError(this.errorHandler)
     )
   }
@@ -62,8 +71,22 @@ export class UserService {
     );
   }
 
-  delete(id: number) {
-    return this.httpClient.delete(this.apiURL + id, this.httpOptions)
+  like(id: number) {
+    return this.httpClient.get(this.apiURL + 'like/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
+  liked(id: number): Observable<Boolean> {
+    return this.httpClient.get<Boolean>(this.apiURL + 'liked/' + id, this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
+  delete() {
+    return this.httpClient.delete(this.apiURL, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );

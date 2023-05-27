@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { take, zip } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../model/user.interface';
 

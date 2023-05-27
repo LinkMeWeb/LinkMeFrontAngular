@@ -53,13 +53,6 @@ export class PhotoService {
     );
   }
 
-  like(id: number) {
-    return this.httpClient.post(this.apiURL + id + '/like', null, this.httpOptions)
-    .pipe(
-      catchError(this.errorHandler)
-    );
-  }
-
   errorHandler(error: any) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

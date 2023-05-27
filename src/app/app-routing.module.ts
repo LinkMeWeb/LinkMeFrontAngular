@@ -30,7 +30,7 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [UserGuard]
+    // canActivate: [UserGuard]
 
   },
   {

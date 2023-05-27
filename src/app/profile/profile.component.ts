@@ -6,6 +6,8 @@ import { take } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ModalEditProfileComponent } from '../shared/modal-edit-profile/modal-edit-profile.component';
+import { PhotoModelComponent } from '../shared/photo-model/photo-model.component';
+import { ModalPhotoComponent } from '../shared/modal-photo/modal-photo.component';
 
 @Component({
   selector: 'app-profile',
@@ -63,6 +65,23 @@ export class ProfileComponent implements OnInit {
   findOwnerUser() {
     this.authService.getOwnUser().pipe(take(1))
     .subscribe(res => this.user = res.data)
+  }
+
+  openPhotoModal(photoId: number) {
+    const initialState: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl',
+      initialState: {
+        title: this.title,
+        user: this.user,
+        photoId: photoId
+      }
+    };
+    this.bsModalRef = this.modalService.show(ModalPhotoComponent, initialState);
+    this.bsModalRef.onHidden.subscribe(() => {
+      if (this.bsModalRef.content.save) {
+        this.findOwnerUser();
+      }
+    })
   }
 
 }

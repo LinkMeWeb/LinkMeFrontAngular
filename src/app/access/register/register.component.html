@@ -1,4 +1,4 @@
-<ng-container *ngIf="!registered">
+<ng-container>
   <section class="vh-75 mt-lg-5 mt-2">
     <div class="container h-75">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -204,22 +204,4 @@
       </div>
     </div>
   </section>
-</ng-container>
-
-<ng-container *ngIf="registered">
-  <div class="d-flex justify-content-center align-items-center vh-100">
-    <form (submit)="onUpdate()" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Sobre mi</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="formFile" class="form-label">Imagen de perfil</label>
-        <input class="form-control" type="file" id="formFile">
-      </div>
-      <div class="col-auto">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
-  </div>
 </ng-container>
