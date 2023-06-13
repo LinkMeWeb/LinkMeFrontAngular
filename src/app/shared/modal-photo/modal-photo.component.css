@@ -16,11 +16,11 @@
     max-width: 1300px;
 }
 
-/* .cut-text { 
+/* .cut-text {
   text-overflow: ellipsis;
-  overflow: hidden; 
-  width: 160px; 
-  height: 1.2em; 
+  overflow: hidden;
+  width: 160px;
+  height: 1.2em;
   white-space: nowrap;
 } */
 
@@ -30,9 +30,10 @@
     width:500px;
     word-wrap: break-word;
     text-overflow: ellipsis;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .liked {
   color: red;
 }
+

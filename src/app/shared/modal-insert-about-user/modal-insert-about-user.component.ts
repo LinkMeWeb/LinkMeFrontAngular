@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { UserUpdate } from '../model/user-update';
 import { Router } from '@angular/router';
+import { switchMap, take } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-modal-insert-about-user',
@@ -17,11 +19,13 @@ export class ModalInsertAboutUserComponent implements OnInit{
   aboutForm: FormGroup;
   user: UserUpdate
   title: string;
-  profileImage: File
+  profileImage: File;
+  token: string;
 
   constructor(
     public bsModalRef: BsModalRef,
     private userService: UserService,
+    private authService: AuthService
   ) {
 
   }
@@ -38,21 +42,38 @@ export class ModalInsertAboutUserComponent implements OnInit{
     }
     this.user.about = this.aboutForm.get('aboutMe').value;
     this.user.photo_path = this.profileImage
-    this.userService.update(this.user)
-    .subscribe((res) => {
-      console.log(res);
+    const prevPass = this.user.password;
+    // this.userService.update(this.user)
+    // .subscribe((res) => {
+    //   console.log(res);
       
+    //   this.save = true;
+    //   this.bsModalRef.hide();
+    // });
+
+    this.userService.create(this.user).pipe(
+      switchMap(userRegistered => {
+        this.user = userRegistered;
+        return this.authService.login({nickname: this.user.nickname, password: prevPass}).pipe(
+          take(1)
+        );
+      })
+    ).subscribe((userLogged) => {
+      console.log(this.profileImage);
+      
+      this.token = userLogged.token;
       this.save = true;
       this.bsModalRef.hide();
-    });
+    })
   }
 
   getFile(event) {
-    let file = event.target.files[0];
-    this.profileImage = null;
+    const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
       this.profileImage = file;
+      return;
     }
+    this.profileImage = null;
   }
 
   showAlertError() {

@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
-import { User } from '../shared/model/user.interface';
-import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
-import { AuthService } from '../services/auth.service';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { ModalEditProfileComponent } from '../shared/modal-edit-profile/modal-edit-profile.component';
-import { PhotoModelComponent } from '../shared/photo-model/photo-model.component';
-import { ModalPhotoComponent } from '../shared/modal-photo/modal-photo.component';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../services/user.service';
+import {User} from '../shared/model/user.interface';
+import {ActivatedRoute} from '@angular/router';
+import {switchMap, take, tap} from 'rxjs';
+import {AuthService} from '../services/auth.service';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {ModalEditProfileComponent} from '../shared/modal-edit-profile/modal-edit-profile.component';
+import {ModalPhotoComponent} from '../shared/modal-photo/modal-photo.component';
+import {Photo} from "../shared/model/photo.interface";
 
 @Component({
   selector: 'app-profile',
@@ -18,9 +18,11 @@ export class ProfileComponent implements OnInit {
 
   nickname: string;
   user: User;
-  owner: boolean = false;
+  owner = false;
   bsModalRef?: BsModalRef;
-  title: string = "Editar Perfil"
+  title = "Editar Perfil"
+  profileImage: any;
+  photos: Photo[];
 
   constructor(
     private userService: UserService,
@@ -29,6 +31,33 @@ export class ProfileComponent implements OnInit {
     private modalService: BsModalService
   ) {
     this.nickname = this.route.snapshot.params['nickname'];
+  }
+
+  ngOnInit() {
+    if (this.nickname) {
+      this.findByNickname()
+      this.retrievePhotosUser();
+      return;
+    }
+    this.findOwnerUser();
+    this.owner = true;
+  }
+
+  retrievePhotosUser() {
+    this.userService.getUserPhotos(this.nickname).pipe(take(1))
+      .subscribe((res: Photo[]) => {
+        this.photos = res
+        console.log(this.photos)
+      })
+  }
+
+  findByNickname() {
+    this.userService.findByNickname(this.nickname).pipe(take(1),
+      tap(res => this.user = res),
+      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(
+        tap((data: any) => this.profileImage = 'data:image/jpeg;base64,' + data.imageData)
+      ))
+    ).subscribe()
   }
 
   openModalWithComponent() {
@@ -48,23 +77,13 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
-    if (this.nickname) {
-      this.findByNickname();
-      return;
-    }
-    this.findOwnerUser();
-    this.owner = true;
-  }
-
-  findByNickname() {
-    this.userService.findByNickname(this.nickname)
-    .subscribe(data => this.user = data)
-  }
-
   findOwnerUser() {
-    this.authService.getOwnUser().pipe(take(1))
-    .subscribe(res => this.user = res.data)
+    this.authService.getOwnUser().pipe(take(1),
+      tap(res => this.user = res.data),
+      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(
+        tap((data: any) => this.profileImage = 'data:image/jpeg;base64,' + data.imageData)
+      ))
+    ).subscribe()
   }
 
   openPhotoModal(photoId: number) {

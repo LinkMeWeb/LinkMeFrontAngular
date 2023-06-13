@@ -60,18 +60,21 @@ export class RegisterComponent implements OnInit {
     if (!this.registerForm.valid)  {
       return;
     }
-    this.userService.create(this.registerForm.value).pipe(
-      switchMap(userRegistered => {
-        this.user = userRegistered;
-        return this.authService.login({nickname: this.user.nickname, password: this.registerForm.get('password').value}).pipe(
-          take(1)
-        );
-      })
-    ).subscribe(userLogged => {
-      this.token = userLogged.token;
-      this.registered = true;
-      this.openAboutModal();
-    });
+    // this.userService.create(this.registerForm.value).pipe(
+    //   switchMap(userRegistered => {
+    //     this.user = userRegistered;
+    //     return this.authService.login({nickname: this.user.nickname, password: this.registerForm.get('password').value}).pipe(
+    //       take(1)
+    //     );
+    //   })
+    // ).subscribe(userLogged => {
+    //   this.token = userLogged.token;
+    this.user = this.registerForm.value;
+    console.log(this.user);
+    
+    this.registered = true;
+    this.openAboutModal();
+    // });
   }
 
   openAboutModal() {
@@ -85,7 +88,7 @@ export class RegisterComponent implements OnInit {
     this.bsModalRef = this.modalService.show(ModalInsertAboutUserComponent, initialState);
     this.bsModalRef.onHidden.subscribe(() => {
       if (this.bsModalRef.content.save) {
-      localStorage.setItem('token', this.token);
+      localStorage.setItem('token', this.bsModalRef.content.token);
         this.router.navigate(['']);
       }
     })

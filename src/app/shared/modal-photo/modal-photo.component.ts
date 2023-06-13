@@ -18,7 +18,7 @@ export class ModalPhotoComponent implements OnInit {
   user: UserUpdate
   title: string;
   profileImage: File;
-  likes: number = 2000000000;
+  likes = 2000000000;
   userLiked: boolean;
   photoId: number;
   loaded = false;

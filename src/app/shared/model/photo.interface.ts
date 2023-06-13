@@ -4,7 +4,7 @@ export interface Photo {
   description: string;
   likes:       number;
   photo:       string;
-  userID:      number;
-  createdAt:   Date;
-  updatedAt:   Date;
+  user_id:     number;
+  created_at:   Date;
+  updated_at:   Date;
 }

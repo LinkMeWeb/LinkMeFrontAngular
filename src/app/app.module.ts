@@ -19,6 +19,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ModalInsertAboutUserComponent } from './shared/modal-insert-about-user/modal-insert-about-user.component';
 import { SharedModule } from './shared/shared.module';
 import { SuggestionsComponent } from './main/suggestions/suggestions.component';
+import { PhotoUserComponent } from './main/photo-user/photo-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,9 +31,9 @@ import { SuggestionsComponent } from './main/suggestions/suggestions.component';
     RegisterComponent,
     PhotoModelComponent,
     // TODO migrar al shared component
-    ModalEditProfileComponent,
-    ModalInsertAboutUserComponent,
-    SuggestionsComponent
+    //ModalEditProfileComponent,
+    SuggestionsComponent,
+    PhotoUserComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +44,7 @@ import { SuggestionsComponent } from './main/suggestions/suggestions.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { PhotoService } from '../services/photo.service';
-import { Photo } from '../shared/model/photo.interface';
-import { AppComponent } from '../app.component';
+import {Component, OnInit} from '@angular/core';
+import {PhotoService} from '../services/photo.service';
+import {Photo} from '../shared/model/photo.interface';
+import {AppComponent} from '../app.component';
+import {UserService} from "../services/user.service";
+import {take, zip} from "rxjs";
+import {User} from "../shared/model/user.interface";
 
 @Component({
   selector: 'app-main',
@@ -10,20 +13,28 @@ import { AppComponent } from '../app.component';
 })
 export class MainComponent implements OnInit {
 
-  photos: Photo[]
+  photos: Photo[];
+  users: Map<number, User> = new Map<number, User>;
+  imageDataUrl: string;
 
   constructor(
     private photoService: PhotoService,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private userService: UserService
   ) {
     this.appComponent.showNavbar = true;
   }
 
   ngOnInit(): void {
-    this.photoService.getAll().subscribe(photo => {
-      this.photos = photo
-      console.log(this.photos)
-    })
+    zip(
+      this.photoService.getAll(),
+      this.userService.getAll()
+    ).pipe(take(1))
+      .subscribe(([photos, users]) => {
+        this.photos = photos
+        this.users = new Map(users.map(user => [user.id, user]));
+      })
   }
+
 
 }

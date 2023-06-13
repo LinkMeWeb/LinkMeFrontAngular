@@ -16,12 +16,13 @@ export class PhotoService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     })
   }
 
   getAll(): Observable<Photo[]> {
-    return this.httpClient.get<Photo[]>(this.apiURL)
+    return this.httpClient.get<Photo[]>(this.apiURL, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );
@@ -35,7 +36,7 @@ export class PhotoService {
   }
 
   find(id: number): Observable<Photo> {
-    return this.httpClient.get<Photo>(this.apiURL + id)
+    return this.httpClient.get<Photo>(this.apiURL + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );

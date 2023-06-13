@@ -24,7 +24,7 @@ export class UserService {
   }
 
   getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(this.apiURLVoid + 'users')
+    return this.httpClient.get<User[]>(this.apiURLVoid + 'users', this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );
@@ -51,7 +51,7 @@ export class UserService {
   }
 
   find(id: number): Observable<User> {
-    return this.httpClient.get<User>(this.apiURL + id)
+    return this.httpClient.get<User>(this.apiURL + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -64,8 +64,8 @@ export class UserService {
     );
   }
 
-  emailExists(email: string): Observable<Boolean> {
-    return this.httpClient.get<Boolean>(this.apiURL + 'check-email/' + email, this.httpOptions)
+  emailExists(email: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(this.apiURL + 'check-email/' + email, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );
@@ -78,13 +78,33 @@ export class UserService {
     );
   }
 
-  liked(id: number): Observable<Boolean> {
-    return this.httpClient.get<Boolean>(this.apiURL + 'liked/' + id, this.httpOptions)
+  liked(id: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(this.apiURL + 'liked/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );
   }
 
+  getProfileImage(id: number) {
+    return this.httpClient.get<Object>(this.apiURLVoid + 'user/profile/image/' + id, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  getUserPhotos(nickname: string) {
+    return this.httpClient.get(this.apiURL + 'images/' + nickname, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  searchUser(nickname: string) {
+    return this.httpClient.get(this.apiURLVoid + 'user/search/users/' + nickname, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
   delete() {
     return this.httpClient.delete(this.apiURL, this.httpOptions)
     .pipe(

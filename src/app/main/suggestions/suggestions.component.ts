@@ -20,9 +20,8 @@ export class SuggestionsComponent implements OnInit{
 
   ngOnInit(): void {
     this.userService.getAllByParams({limit: 10}).pipe(take(1))
-    .subscribe(users => {
+    .subscribe((users: User[]) => {
       this.userSuggestions = users;
-      console.log(this.userSuggestions);
     })
   }
 

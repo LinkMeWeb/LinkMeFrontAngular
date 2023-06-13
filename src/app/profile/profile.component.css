@@ -12,5 +12,10 @@
   .modal-big .modal-dialog {
     max-width: 1500px; /* Define el ancho máximo del modal */
   }
-  
 
+.profile-image {
+  width: 150px;
+  height: 120px;
+  max-height: 200px;
+  z-index: 1
+}

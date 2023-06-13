@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.btn-primary {
+  background-color: #008CBA !important;
+  border-radius: 4px !important;
+}
+
+.btn-danger {
+  background-color: #f44336 !important;
+  border-radius: 4px !important;
+}
