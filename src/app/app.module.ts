@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ProfileComponent} from './profile/profile.component';
 import {SearchBarComponent} from './shared/search-bar/search-bar.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MainComponent} from './main/main.component';
 import {PhotoComponent} from './photo/photo.component';
 import {LoginComponent} from './access/login/login.component';
@@ -20,7 +20,7 @@ import {SuggestionsComponent} from './main/suggestions/suggestions.component';
 import {PhotoUserComponent} from './main/photo-user/photo-user.component';
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {CommentPhotoComponent} from './main/comment-photo/comment-photo.component';
-import {fadeInOnEnterAnimation} from "angular-animations";
+
 
 @NgModule({
   declarations: [
@@ -50,7 +50,6 @@ import {fadeInOnEnterAnimation} from "angular-animations";
     SharedModule,
     TooltipModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {

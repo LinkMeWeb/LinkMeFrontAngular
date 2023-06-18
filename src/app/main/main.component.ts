@@ -5,10 +5,8 @@ import {AppComponent} from '../app.component';
 import {UserService} from "../services/user.service";
 import {take, zip} from "rxjs";
 import {User} from "../shared/model/user.interface";
-import {fadeInOnEnterAnimation} from "angular-animations";
 
 @Component({
-  animations: [fadeInOnEnterAnimation()],
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
@@ -23,7 +21,6 @@ export class MainComponent implements OnInit {
     private appComponent: AppComponent,
     private userService: UserService
   ) {
-    this.appComponent.showNavbar = true;
   }
 
   ngOnInit(): void {

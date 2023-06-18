@@ -28,7 +28,7 @@ import {UploadPhotoComponent} from './upload-photo/upload-photo.component';
     CommonModule,
     ReactiveFormsModule,
     FormsModule
-  ]
+  ],
 })
 export class SharedModule {
 }

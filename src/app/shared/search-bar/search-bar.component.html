@@ -1,8 +1,8 @@
 <ng-container *ngIf="user !== null">
   <div class="d-flex justify-content-between pt-3 nav">
-    <div class="navigation">
+    <div class="navigation" routerLink="">
       <div class="logo">
-        <a class="no-underline" href=""> LinkMe </a>
+        <a class="no-underline"> LinkMe </a>
       </div>
     </div>
 
@@ -15,7 +15,7 @@
       <a class="navigation-link" (click)="uploadPhoto()">
         <i class="far fa-square-plus"></i>
       </a>
-      <a href="{{ '/profile' }}" class="navigation-link">
+      <a routerLink="/profile" class="navigation-link">
         <i class="far fa-user-circle"></i>
       </a>
       <a

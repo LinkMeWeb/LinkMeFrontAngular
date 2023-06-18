@@ -4,6 +4,7 @@ import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {switchMap, take, tap} from 'rxjs';
+import {User} from "../../shared/model/user.interface";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   token: string = '';
-
+  user: User;
 
   constructor(
     private authService: AuthService,
@@ -40,16 +41,14 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).pipe(
       take(1),
-      tap((res) => {
-        this.token = res.token;
-        localStorage.setItem('token', this.token);
-      }),
-      switchMap(() => {
-          return this.authService.getOwnUser().pipe(take(1));
-      })
-    ).subscribe(res => {
-      this.appComponent.user = res;
+      switchMap(res => this.authService.getOwnUser().pipe(
+        tap(res => {
+          this.user = res
+        })
+      ))
+    ).subscribe(() => {
       this.appComponent.showNavbar = true;
+      this.appComponent.user = this.user;
       this.router.navigate(['/']);
     })
   }

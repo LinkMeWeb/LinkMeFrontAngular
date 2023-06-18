@@ -3,13 +3,13 @@
     <div class="panel panel-white post">
       <div class="post-heading">
         <div class="pull-left image d-flex align-items-center justify-content-start">
-          <img [src]="'http://localhost' + user.photo_path"
+          <img routerLink="/profile/{{user.nickname}}" [src]="'http://localhost' + user.photo_path"
                class="img-circle avatar rounded-circle border border-2 border-dark"
                alt="user profile image">
         </div>
         <div class="pull-left meta">
           <div class="title h5">
-            <a href="#"><b>{{user.nickname | titlecase}}</b></a>
+            <a routerLink="/profile/{{user.nickname}}"><b>{{user.nickname | titlecase}}</b></a>
             ha subido una imagen.
           </div>
           <h6 class="text-muted time">Publicado

@@ -2,24 +2,20 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Photo } from '../shared/model/photo.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {BaseService} from "./base.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PhotoService {
+export class PhotoService extends BaseService {
 
   constructor(
     private httpClient: HttpClient,
-  ) { }
+  ) {
+    super()
+  }
 
   private apiURL = 'http://localhost/api/photo/';
-
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    })
-  }
 
   getAll(): Observable<Photo[]> {
     return this.httpClient.get<Photo[]>(this.apiURL, this.httpOptions)

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {UserService} from 'src/app/services/user.service';
 import {User} from '../model/user.interface';
 import {take} from 'rxjs';
@@ -13,7 +13,7 @@ import {AppComponent} from "../../app.component";
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.css']
 })
-export class SearchBarComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SearchBarComponent {
 
   @Input() user: User;
   bsModalRef?: BsModalRef;
@@ -27,28 +27,12 @@ export class SearchBarComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
   }
 
-  ngOnInit() {
-
-  }
-
-  ngAfterViewInit() {
-
-  }
-
-  ngOnDestroy() {
-    this.user = {}
-  }
-
   logout() {
-    if (localStorage.getItem('token')) {
-      this.authService.logout().pipe(take(1))
-        .subscribe(() => {
-          localStorage.removeItem('token')
-          this.appComponent.showNavbar = false
-          this.route.navigate(['/login'])
-          this.ngOnDestroy()
-        })
-    }
+    this.authService.logout().pipe(take(1))
+      .subscribe(() => {
+        this.appComponent.showNavbar = false
+        this.route.navigate(['/login'])
+      })
   }
 
   uploadPhoto() {

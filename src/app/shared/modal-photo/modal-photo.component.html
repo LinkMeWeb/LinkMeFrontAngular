@@ -47,7 +47,7 @@
                 <h5 class="card-title">{{user.nickname | titlecase}}</h5>
               </div>
               <a class="text-decoration-none logo text-dark">
-                <span class="no-font">{{photo.likes | number:'1.0'}}</span>
+                <span class="no-font me-1">{{photo.likes | number:'1.0'}}</span>
                 <i class="far fa-heart" [ngClass]="{'fa-solid liked' : userLiked}" (click)="likeRequest()"></i>
               </a>
             </div>

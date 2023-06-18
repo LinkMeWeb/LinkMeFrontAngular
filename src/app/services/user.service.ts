@@ -3,25 +3,22 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { User } from '../shared/model/user.interface';
 import { UserUpdate } from '../shared/model/user-update';
+import {BaseService} from "./base.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends BaseService{
 
   constructor(
     private httpClient: HttpClient
-  ) { }
+  ) {
+    super()
+  }
 
   private apiURL = 'http://localhost/api/user/';
   private apiURLVoid = 'http://localhost/api/';
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    })
-  }
 
   getAll(): Observable<User[]> {
     return this.httpClient.get<User[]>(this.apiURLVoid + 'users', this.httpOptions)
@@ -161,6 +158,8 @@ export class UserService {
       catchError(this.errorHandler)
     );
   }
+
+
 
   errorHandler(error: any) {
     let errorMessage = '';
