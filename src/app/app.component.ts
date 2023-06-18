@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {NavigationEnd, Router} from "@angular/router";
+import {User} from "./shared/model/user.interface";
 
 @Component({
   selector: 'app-root',
@@ -8,4 +10,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'linkme-front';
   showNavbar = true;
+  user: User
+  constructor(
+    private router: Router
+  ) {
+
+  }
+
 }

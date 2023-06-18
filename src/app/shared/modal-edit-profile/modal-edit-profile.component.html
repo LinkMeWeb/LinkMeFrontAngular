@@ -20,11 +20,17 @@
     </div>
     <div class="mb-3">
       <label for="nickname" class="form-label">NickName</label>
-      <input type="text" formControlName="nickname" class="form-control" id="nickname">
+      <input type="text" formControlName="nickname" class="form-control" id="nickname" #nickname>
+      <div *ngIf="editProfile.get('nickname')?.errors && editProfile.get('nickname')?.errors.exists">
+        <div class="text-danger">El nickname ya existe</div>
+      </div>
     </div>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" #email>
+      <div *ngIf="editProfile.get('email')?.errors && editProfile.get('email')?.errors.exists">
+        <div class="text-danger">El correo ya existe</div>
+      </div>
       <div *ngIf="editProfile.get('email')?.invalid && editProfile.get('email')?.touched">
         <div class="text-danger" *ngIf="editProfile.get('email')?.hasError('email')">El correo ha de ser válido</div>
       </div>

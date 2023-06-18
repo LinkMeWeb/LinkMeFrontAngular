@@ -63,9 +63,13 @@
                           class="form-control"
                           placeholder="Nickname"
                           formControlName="nickname"
+                          #nickname
                         />
                       </div>
                     </div>
+                    <p *ngIf="registerForm.get('nickname')?.errors && registerForm.get('nickname')?.errors.exists" class="text-danger mb-2">
+                      El nickname ya existe
+                    </p>
                     <div
                       *ngIf="
                         registerForm.get('nickname')?.invalid &&
@@ -94,9 +98,13 @@
                           placeholder="Email"
                           class="form-control"
                           formControlName="email"
+                          #email
                         />
                       </div>
                     </div>
+                    <p *ngIf="registerForm.get('email')?.errors && registerForm.get('email')?.errors.exists" class="text-danger mb-2">
+                      El email ya existe
+                    </p>
                     <div
                       *ngIf="
                         registerForm.get('email')?.invalid &&
@@ -108,7 +116,6 @@
                         El email no cumple los requisitos
                       </div>
                     </div>
-
                     <div
                       class="d-flex flex-row align-items-center"
                       ngClass="{{
@@ -154,6 +161,7 @@
                           placeholder="Contraseña Repetida"
                           class="form-control"
                           formControlName="repeatPassword"
+                          #repeatPassword
                         />
                       </div>
                     </div>
@@ -167,18 +175,27 @@
                       <div class="text-danger">La contraseña no coincide</div>
                     </div>
 
-                    <div class="form-check d-flex justify-content-center mb-5">
+                    <div class="form-check d-flex justify-content-center mb-2">
                       <input
                         class="form-check-input me-2"
+                        name="checked"
                         type="checkbox"
-                        value=""
-                        id="form2Example3c"
+                        id="checked"
+                        formControlName="checked"
                       />
-                      <label class="form-check-label" for="form2Example3">
+                      <label class="form-check-label" for="checked">
                         Acepto todos los <a href="#!">Terminos</a>
                       </label>
                     </div>
-
+                    <div
+                      *ngIf="
+                        registerForm.get('checked')?.invalid &&
+                        registerForm.get('checked')?.touched
+                      "
+                      class="mb-4"
+                    >
+                      <div class="text-danger text-center">Los terminos son obligatorios</div>
+                    </div>
                     <div
                       class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
                     >

@@ -1,40 +1,30 @@
-<div class="d-flex justify-content-between pt-3 nav">
-  <div class="navigation">
-    <div class="logo">
-      <a class="no-underline" href=""> LinkMe </a>
+<ng-container *ngIf="user !== null">
+  <div class="d-flex justify-content-between pt-3 nav">
+    <div class="navigation">
+      <div class="logo">
+        <a class="no-underline" href=""> LinkMe </a>
+      </div>
     </div>
-  </div>
 
-<app-search-input></app-search-input>
+    <app-search-input></app-search-input>
 
-  <div>
-    <a
-      href="https://instagram.com/mimoudix"
-      target="_blank"
-      class="navigation-link"
-    >
-      <i class="far fa-compass"></i>
-    </a>
-    <a class="navigation-link notifica">
-      <i class="far fa-heart">
-        <div class="notification-bubble-wrapper">
-          <div class="notification-bubble">
-            <span class="notification-count">99</span>
-          </div>
-        </div>
-      </i>
-    </a>
-    <ng-container *ngIf="user">
+    <div>
+      <a class="navigation-link notifica">
+        <i class="far fa-heart"></i>
+      </a>
+      <a class="navigation-link" (click)="uploadPhoto()">
+        <i class="far fa-square-plus"></i>
+      </a>
       <a href="{{ '/profile' }}" class="navigation-link">
         <i class="far fa-user-circle"></i>
       </a>
-    </ng-container>
-    <a
-    (click)="logout()"
-      id="signout"
-      class="navigation-link"
-    >
-      <i class="fas fa-sign-out-alt"></i>
-    </a>
+      <a
+        (click)="logout()"
+        id="signout"
+        class="navigation-link"
+      >
+        <i class="fas fa-sign-out-alt"></i>
+      </a>
+    </div>
   </div>
-</div>
+</ng-container>

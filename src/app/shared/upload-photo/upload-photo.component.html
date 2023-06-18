@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ title }}</h4>
+</div>
+<div class="modal-body">
+
+  <form [formGroup]="newPhotoForm" (ngSubmit)="onSubmit()" id="aboutForm" enctype='multipart/form-data'>
+
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Título</label>
+      <input class="form-control" type="text" id="title" formControlName="title">
+      <div *ngIf="newPhotoForm.get('title').invalid && newPhotoForm.get('title').touched" class="text-danger">
+        El título es requerido.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Descripción</label>
+      <textarea class="form-control" aria-label="With textarea" formControlName="description"></textarea>
+      <div *ngIf="newPhotoForm.get('description').invalid && newPhotoForm.get('description').touched" class="text-danger">
+        La descripción es requerida.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Imagen</label>
+      <input class="form-control" type="file" id="formFile" (change)="getFile($event)">
+    </div>
+
+    <div class="mb-3" >
+      <label *ngIf="photoUploaded && photoUploaded.uploaded" for="formFile" class="form-label">Previsualización:</label>
+      <div class="d-flex align-items-center justify-content-center">
+        <img #imagen src="" alt="" class="w-75 h-50">
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary" form="aboutForm">Guardar</button>
+</div>

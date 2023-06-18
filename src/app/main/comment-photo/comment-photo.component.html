@@ -1,0 +1,12 @@
+<li class="comment" *ngIf="user">
+  <a class="pull-left" href="javascript:void(0);">
+    <img class="avatar rounded-circle" [src]="'http://localhost' + user.photo_path" alt="avatar">
+  </a>
+  <div class="comment-body">
+    <div class="comment-heading d-flex align-items-center pt-1">
+      <h4 class="user">{{user.nickname | titlecase}}</h4>
+      <h5 class="time mt-1">{{ comment.created_at | date: 'dd/MM/yyyy HH:mm' }}</h5>
+    </div>
+    <p>{{comment.content}}</p>
+  </div>
+</li>

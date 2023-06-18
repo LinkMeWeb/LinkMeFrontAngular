@@ -23,6 +23,9 @@ export class ProfileComponent implements OnInit {
   title = "Editar Perfil"
   profileImage: any;
   photos: Photo[];
+  follows: number;
+  followers: number;
+  isFollowing = false;
 
   constructor(
     private userService: UserService,
@@ -54,8 +57,17 @@ export class ProfileComponent implements OnInit {
   findByNickname() {
     this.userService.findByNickname(this.nickname).pipe(take(1),
       tap(res => this.user = res),
-      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(
+/*      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(
         tap((data: any) => this.profileImage = 'data:image/jpeg;base64,' + data.imageData)
+      )),*/
+      switchMap(() => this.userService.getFollows(this.user.id).pipe(
+        tap((data: any) => this.follows = data.follows)
+      )),
+      switchMap(() => this.userService.getFollowers(this.user.id).pipe(
+        tap((data: any) => this.followers = data.followers)
+      )),
+      switchMap(() => this.userService.checkFollowing(this.user.id).pipe(
+        tap((data: any) => this.isFollowing = data)
       ))
     ).subscribe()
   }
@@ -77,12 +89,33 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  follow() {
+    this.userService.follow(this.user.id).pipe(take(1),
+      switchMap(() => this.userService.getFollowers(this.user.id).pipe(
+        tap((data: any) => this.followers = data.followers)
+      )),
+      switchMap(() => this.userService.checkFollowing(this.user.id).pipe(
+        tap((data: any) => this.isFollowing = data)
+      ))
+      )
+      .subscribe()
+  }
+
   findOwnerUser() {
     this.authService.getOwnUser().pipe(take(1),
       tap(res => this.user = res.data),
-      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(
+/*      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(take(1),
         tap((data: any) => this.profileImage = 'data:image/jpeg;base64,' + data.imageData)
-      ))
+      )),*/
+      switchMap(() => this.userService.getUserPhotos(this.user.nickname).pipe(take(1),
+        tap((data: any) => this.photos = data)
+      )),
+      switchMap(() => this.userService.getFollows(this.user.id).pipe(take(1),
+        tap((data: any) => this.follows = data.follows)
+      )),
+      switchMap(() => this.userService.getFollowers(this.user.id).pipe(
+        tap((data: any) => this.followers = data.followers)
+      )),
     ).subscribe()
   }
 

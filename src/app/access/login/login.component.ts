@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { AppComponent } from '../../app.component';
-import { take } from 'rxjs';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
+import {AppComponent} from '../../app.component';
+import {switchMap, take, tap} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +13,7 @@ export class LoginComponent implements OnInit {
   @ViewChild('navbar') navbar: any;
 
   loginForm: FormGroup;
-  submitted = false;
-  token: any;
+  token: string = '';
 
 
   constructor(
@@ -34,20 +33,25 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
 
     if (!this.loginForm.valid) {
       return;
     }
 
-    this.authService
-      .login(this.loginForm.value)
-      .pipe(take(1))
-      .subscribe((res) => {
+    this.authService.login(this.loginForm.value).pipe(
+      take(1),
+      tap((res) => {
         this.token = res.token;
         localStorage.setItem('token', this.token);
-        if (this.submitted) this.router.navigate(['']);
-        this.appComponent.showNavbar = true;
-      });
+      }),
+      switchMap(() => {
+          return this.authService.getOwnUser().pipe(take(1));
+      })
+    ).subscribe(res => {
+      this.appComponent.user = res;
+      this.appComponent.showNavbar = true;
+      this.router.navigate(['/']);
+    })
   }
+
 }

@@ -1,0 +1,56 @@
+<ng-container *ngIf="photo && user && comments">
+  <div class="col-sm-12">
+    <div class="panel panel-white post">
+      <div class="post-heading">
+        <div class="pull-left image d-flex align-items-center justify-content-start">
+          <img [src]="'http://localhost' + user.photo_path"
+               class="img-circle avatar rounded-circle border border-2 border-dark"
+               alt="user profile image">
+        </div>
+        <div class="pull-left meta">
+          <div class="title h5">
+            <a href="#"><b>{{user.nickname | titlecase}}</b></a>
+            ha subido una imagen.
+          </div>
+          <h6 class="text-muted time">Publicado
+            el: {{ photo.created_at | date: 'dd/MM/yyyy' }} {{photo.created_at | date: 'HH:mm'}}</h6>
+        </div>
+      </div>
+      <div class="post-image d-flex align-items-center justify-content-center">
+        <img [src]="'http://localhost' + photo.photo" class="image" alt="image post" style="width: 96%">
+      </div>
+      <div class="post-description">
+        <h4>{{photo.title}}</h4>
+        <p>{{photo.description | titlecase}}</p>
+        <div class="stats">
+          <div class="btn btn-default stat-item" (click)="likeRequest()">
+            <i class="far fa-heart me-2" [ngClass]="{'fa-solid liked' : userLiked}"></i> <span>{{photo.likes}}</span>
+          </div>
+          <a href="javascript:void(0);" class="btn btn-default stat-item">
+            <i class="fa fa-share icon"></i>128
+          </a>
+        </div>
+      </div>
+      <form [formGroup]="commentForm" (ngSubmit)="submitForm()" class="post-footer">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Añadir comentario"
+                 aria-label="Añadir comentario" aria-describedby="button-addon2" formControlName="comment">
+          <button class="btn btn-outline-dark" type="submit" id="button-addon2">
+            <i class="fa fa-edit"></i>
+          </button>
+        </div>
+        <div
+          *ngIf="commentForm.get('comment').invalid && (commentForm.get('comment').dirty || commentForm.get('comment').touched)">
+          <div *ngIf="commentForm.get('comment').errors.required">
+            <p class="text-danger">El comentario no puede estar vacío.</p>
+          </div>
+        </div>
+        <ul class="comments-list overflow-auto" style="max-height: 200px">
+          <ng-container *ngFor="let comment of comments">
+            <app-comment-photo [comment]="comment"></app-comment-photo>
+          </ng-container>
+        </ul>
+      </form>
+    </div>
+  </div>
+</ng-container>

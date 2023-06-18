@@ -1,0 +1,21 @@
+<div class="navigation-search-container">
+  <i class="fa fa-search"></i>
+  <input #searchInput class="search-field" type="text" placeholder="Search"/>
+  <ng-container *ngIf="suggestedUsers && suggestedUsers.length">
+    <ul class="bg-white results mt-1 overflow-auto border-start border-end border-top border-dark" style="max-height: 150px">
+      <div *ngFor="let user of suggestedUsers">
+        <li class="p-2 d-flex align-items-center border-dark border-bottom" (click)="goToUserProfile(user.nickname)">
+          <img [src]="'http://localhost' + user.photo_path" alt="{{user.nickname}}"
+               class="rounded-circle border border-1 border-dark shadow-1-strong me-3"
+               width="30" height="30">
+          {{user.nickname | titlecase}}
+        </li>
+      </div>
+    </ul>
+  </ng-container>
+  <div class="search-container">
+    <div class="search-container-box">
+      <div class="search-results"></div>
+    </div>
+  </div>
+</div>

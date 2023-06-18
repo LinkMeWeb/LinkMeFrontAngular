@@ -4,9 +4,9 @@ export interface User {
   email?:     string;
   nickname?:  string;
   password?:  string;
-  photoPath?: string;
+  photo_path?: string;
   about?:     string;
   photos?:    any[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_at?: Date;
+  apdated_at?: Date;
 }

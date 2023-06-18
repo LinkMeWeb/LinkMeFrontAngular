@@ -28,7 +28,7 @@ export class PhotoService {
     );
   }
 
-  create(photo: Photo): Observable<Photo> {
+  create(photo: any): Observable<Photo> {
     return this.httpClient.post<Photo>(this.apiURL, JSON.stringify(photo), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)

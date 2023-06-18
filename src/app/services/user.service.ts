@@ -65,10 +65,17 @@ export class UserService {
   }
 
   emailExists(email: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(this.apiURL + 'check-email/' + email, this.httpOptions)
+    return this.httpClient.get<boolean>(this.apiURLVoid + 'checkEmail/' + email, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     );
+  }
+
+  nicknameExists(nickname: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(this.apiURLVoid + 'checkUser/' + nickname, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      );
   }
 
   like(id: number) {
@@ -104,6 +111,49 @@ export class UserService {
       .pipe(
         catchError(this.errorHandler)
       )
+  }
+
+  follow(id: number) {
+    return this.httpClient.post(this.apiURL + 'follow', {id: id}, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  getFollows(id: number) {
+    return this.httpClient.get(this.apiURL + 'follows/' + id, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  getFollowers(id: number) {
+    return this.httpClient.get(this.apiURL + 'followers/' + id, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  checkFollowing(id: number) {
+    return this.httpClient.get(this.apiURL + 'checkFollowing/' + id, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  getComments(id: number) {
+    return this.httpClient.get(`${this.apiURLVoid}photos/${id}/comments`, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
+
+  comment(photoId: number, comment: string) {
+    return this.httpClient.post(`${this.apiURLVoid}photos/${photoId}/comments`, {content: comment}, this.httpOptions)
+      .pipe(
+        catchError(this.errorHandler)
+      )
+
   }
   delete() {
     return this.httpClient.delete(this.apiURL, this.httpOptions)
