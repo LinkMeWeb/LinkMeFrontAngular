@@ -1,5 +1,5 @@
 <ng-container *ngIf="user !== null">
-  <div class="d-flex justify-content-between pt-3 nav">
+  <div class="d-flex justify-content-between align-items-center pt-3 nav">
     <div class="navigation" routerLink="">
       <div class="logo">
         <a class="no-underline"> LinkMe </a>
@@ -9,22 +9,22 @@
     <app-search-input></app-search-input>
 
     <div>
-      <a class="navigation-link notifica">
+      <span routerLink="/likedPhotos" class="navigation-link notifica">
         <i class="far fa-heart"></i>
-      </a>
-      <a class="navigation-link" (click)="uploadPhoto()">
+      </span>
+      <span class="navigation-link" (click)="uploadPhoto()">
         <i class="far fa-square-plus"></i>
-      </a>
-      <a routerLink="/profile" class="navigation-link">
+      </span>
+      <span routerLink="/profile" class="navigation-link">
         <i class="far fa-user-circle"></i>
-      </a>
-      <a
+      </span>
+      <span
         (click)="logout()"
         id="signout"
         class="navigation-link"
       >
         <i class="fas fa-sign-out-alt"></i>
-      </a>
+      </span>
     </div>
   </div>
 </ng-container>

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {NavigationEnd, Router} from "@angular/router";
+import {Component} from '@angular/core';
+import {Router} from "@angular/router";
 import {User} from "./shared/model/user.interface";
 
 @Component({
@@ -11,6 +11,7 @@ export class AppComponent {
   title = 'linkme-front';
   showNavbar = true;
   user: User
+
   constructor(
     private router: Router
   ) {

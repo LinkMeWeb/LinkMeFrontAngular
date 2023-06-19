@@ -8,6 +8,7 @@ import {concatMap, distinct, forkJoin, mergeMap, take, tap} from 'rxjs';
 import {Photo} from "../model/photo.interface";
 import {User} from "../model/user.interface";
 import {Comment} from "../model/comment";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-modal-photo',
@@ -27,6 +28,7 @@ export class ModalPhotoComponent implements OnInit {
   comments: Comment[]
   userComments: any
   commentForm: FormGroup;
+  isOwner: boolean;
 
   constructor(
     public bsModalRef: BsModalRef,
@@ -79,6 +81,17 @@ export class ModalPhotoComponent implements OnInit {
       })
   }
 
+  deletePhoto() {
+    if (this.isOwner) {
+      this.photoService.delete(this.photoId).pipe(take(1))
+        .subscribe(() => {
+          this.save = true;
+          this.showAlertSuccessful();
+          this.bsModalRef.hide()
+        })
+    }
+  }
+
   private findPhoto() {
     this.photoService.find(this.photoId).pipe(take(1),
       tap(res => this.photo = res),
@@ -93,6 +106,16 @@ export class ModalPhotoComponent implements OnInit {
         this.userLiked = res
         this.userLiked ? this.photo.likes++ : this.photo.likes--;
       })
+  }
+
+  showAlertSuccessful() {
+    Swal.mixin({
+      title: "Eliminada con éxito",
+      icon: "success",
+      text: "Foto eliminada con éxito",
+      showConfirmButton: false,
+      timer: 1500
+    }).fire()
   }
 
 }

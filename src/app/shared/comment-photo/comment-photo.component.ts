@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
-import {Comment} from "../../shared/model/comment";
+import {Comment} from "../model/comment";
 import {take} from "rxjs";
-import {User} from "../../shared/model/user.interface";
+import {User} from "../model/user.interface";
 
 @Component({
   selector: 'app-comment-photo',

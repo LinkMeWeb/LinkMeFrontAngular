@@ -1,15 +1,13 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import {debounceTime, filter, fromEvent, mergeMap, switchMap, take, tap, zip} from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
-import { AuthService } from 'src/app/services/auth.service';
-import { UserService } from 'src/app/services/user.service';
-import { ModalEditProfileComponent } from 'src/app/shared/modal-edit-profile/modal-edit-profile.component';
-import { ModalInsertAboutUserComponent } from 'src/app/shared/modal-insert-about-user/modal-insert-about-user.component';
-import { User } from 'src/app/shared/model/user.interface';
-import {eventListeners} from "@popperjs/core";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {debounceTime, filter, fromEvent, switchMap} from 'rxjs';
+import {AppComponent} from 'src/app/app.component';
+import {AuthService} from 'src/app/services/auth.service';
+import {UserService} from 'src/app/services/user.service';
+import {ModalInsertAboutUserComponent} from 'src/app/shared/modal-insert-about-user/modal-insert-about-user.component';
+import {User} from 'src/app/shared/model/user.interface';
 
 @Component({
   selector: 'app-register',
@@ -19,10 +17,8 @@ import {eventListeners} from "@popperjs/core";
 export class RegisterComponent implements OnInit, AfterViewInit {
 
   registerForm: FormGroup
-  aboutForm: FormGroup
   user: User
   registered = false;
-  imageProfile: File;
   bsModalRef: BsModalRef;
   token: string;
 
@@ -37,9 +33,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private modalService: BsModalService
-  )
-  {
+    private modalService: BsModalService,
+  ) {
     if (localStorage.getItem('token')) {
       // this.router.navigate([''])
     }
@@ -53,15 +48,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       email: ['', [Validators.required, Validators.minLength(5), Validators.email]],
       password: ['', Validators.required],
       repeatPassword: ['', [Validators.required]],
-      checked: ['',[Validators.required]]
-    },{updateOn: 'change'})
+      checked: ['', [Validators.required]]
+    }, {updateOn: 'change'})
   }
 
   ngAfterViewInit() {
     let nicknameInput = this.nickname.nativeElement
     let emailInput = this.email.nativeElement
 
-    fromEvent(this.repeatPassword.nativeElement,'change')
+    fromEvent(this.repeatPassword.nativeElement, 'change')
       .subscribe(() => this.validatePasswordsMatch())
 
     this.nicknameCheck(nicknameInput);
@@ -90,23 +85,20 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     ).subscribe((res: boolean) => {
       if (res) {
         email.setErrors({exists: true})
-        console.log(this.registerForm.get('email'))
       }
     })
   }
 
   onSubmit() {
-    console.log(this.registerForm.get('checked'))
     if (this.registered) {
       return;
     }
-    if (!this.registerForm.valid)  {
+    if (!this.registerForm.valid) {
       this.registerForm.markAllAsTouched()
       return;
     }
 
     this.user = this.registerForm.value;
-    console.log(this.user);
 
     this.registered = true;
     this.openAboutModal();
@@ -123,7 +115,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.bsModalRef = this.modalService.show(ModalInsertAboutUserComponent, initialState);
     this.bsModalRef.onHidden.subscribe(() => {
       if (this.bsModalRef.content.save) {
-      localStorage.setItem('token', this.bsModalRef.content.token);
+        localStorage.setItem('token', this.bsModalRef.content.token);
+        this.appComponent.showNavbar = true;
         this.router.navigate(['/']);
       }
     })

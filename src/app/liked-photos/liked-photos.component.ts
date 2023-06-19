@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {PhotoService} from '../services/photo.service';
-import {Photo} from '../shared/model/photo.interface';
-import {AppComponent} from '../app.component';
-import {UserService} from "../services/user.service";
-import {take, zip} from "rxjs";
+import { Component } from '@angular/core';
+import {Photo} from "../shared/model/photo.interface";
 import {User} from "../shared/model/user.interface";
+import {PhotoService} from "../services/photo.service";
+import {AppComponent} from "../app.component";
+import {UserService} from "../services/user.service";
 import {EventService} from "../services/event.service";
+import {take, zip} from "rxjs";
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  selector: 'app-liked-photos',
+  templateUrl: './liked-photos.component.html',
+  styleUrls: ['./liked-photos.component.css']
 })
-export class MainComponent implements OnInit {
+export class LikedPhotosComponent {
 
   photos: Photo[];
   users: Map<number, User> = new Map<number, User>;
@@ -30,7 +30,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     zip(
-      this.photoService.getAll(),
+      this.userService.getLikedPhotos(),
       this.userService.getAll()
     ).pipe(take(1))
       .subscribe(([photos, users]) => {
@@ -38,6 +38,5 @@ export class MainComponent implements OnInit {
         this.users = new Map(users.map(user => [user.id, user]));
       })
   }
-
 
 }

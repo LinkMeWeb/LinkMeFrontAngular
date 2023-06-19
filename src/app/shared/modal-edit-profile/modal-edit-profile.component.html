@@ -10,7 +10,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <form [formGroup]="editProfile" (ngSubmit)="onSubmit()" id="editProfile">
+  <form [formGroup]="editProfile" (ngSubmit)="onSubmit()" id="editProfile" enctype='multipart/form-data'>
     <div class="mb-3">
       <label for="name" class="form-label">Nombre</label>
       <input type="text" formControlName="name" class="form-control" id="name">
@@ -42,6 +42,20 @@
         <div class="text-danger" *ngIf="editProfile.get('password')?.hasError('minlength')">La contraseña ha de tener al menos 4 carácteres</div>
       </div>
     </div>
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Sobre mi</label>
+      <textarea class="form-control" aria-label="With textarea" formControlName="aboutMe"></textarea>
+      <div *ngIf="editProfile.get('aboutMe')?.invalid && editProfile.get('aboutMe')?.touched">
+        <div class="text-danger" *ngIf="editProfile.get('aboutMe')?.errors">La contraseña ha de tener al menos 4 carácteres</div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Imagen de Perfil</label>
+      <input class="form-control" type="file" id="formFile" (change)="getFile($event)">
+    </div>
+
   </form>
 </div>
 <div class="modal-footer">

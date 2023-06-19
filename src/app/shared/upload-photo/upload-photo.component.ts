@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserUpdate} from "../model/user-update";
 import {BsModalRef} from "ngx-bootstrap/modal";
@@ -8,6 +8,7 @@ import {take} from "rxjs";
 import Swal from "sweetalert2";
 import {PhotoService} from "../../services/photo.service";
 import {Router} from "@angular/router";
+import {EventService} from "../../services/event.service";
 
 @Component({
   selector: 'app-upload-photo',
@@ -22,7 +23,7 @@ export class UploadPhotoComponent implements OnInit, AfterViewInit {
   photoUploaded: any;
   newPhoto: any;
   newPhotoForm: FormGroup;
-  base64textString:string;
+  base64textString: string;
 
   @ViewChild('imagen') photoUploadInput: any;
 
@@ -32,12 +33,13 @@ export class UploadPhotoComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private photoService: PhotoService,
+    private eventService: EventService,
+    private cdr: ChangeDetectorRef,
     private router: Router
   ) {
   }
 
   ngOnInit() {
-    console.log(this.router.url)
     this.newPhotoForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required]
@@ -47,6 +49,7 @@ export class UploadPhotoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.photoUploaded = this.photoUploadInput.nativeElement;
     this.photoUploaded.uploaded = false;
+    this.cdr.detectChanges();
   }
 
   onSubmit() {
@@ -66,9 +69,8 @@ export class UploadPhotoComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.showAlertSuccessful()
         const routeActual = this.router.url
-        this.router.navigateByUrl('/rel', {skipLocationChange: true}).then(() => {
-          this.router.navigate([routeActual])
-        })
+        this.router.navigate([routeActual])
+        this.eventService.photosUpdated.next('')
         this.bsModalRef.hide();
       })
   }
@@ -89,6 +91,7 @@ export class UploadPhotoComponent implements OnInit, AfterViewInit {
       reader.readAsBinaryString(file);
       return;
     }
+    this.showAlertError()
     this.newPhoto = null;
   }
 

@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../services/user.service';
 import {User} from '../shared/model/user.interface';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {switchMap, take, tap} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
 import {ModalEditProfileComponent} from '../shared/modal-edit-profile/modal-edit-profile.component';
 import {ModalPhotoComponent} from '../shared/modal-photo/modal-photo.component';
 import {Photo} from "../shared/model/photo.interface";
+import {EventService} from "../services/event.service";
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,6 @@ export class ProfileComponent implements OnInit {
   owner = false;
   bsModalRef?: BsModalRef;
   title = "Editar Perfil"
-  profileImage: any;
   photos: Photo[];
   follows: number;
   followers: number;
@@ -31,9 +31,18 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private eventService: EventService,
+    private router: Router
   ) {
     this.nickname = this.route.snapshot.params['nickname'];
+    this.eventService.photosUpdated.subscribe(() => {
+      if (!this.nickname) {
+        this.findOwnerUser()
+        return;
+      }
+      this.router.navigate(['/profile']);
+    })
   }
 
   ngOnInit() {
@@ -50,16 +59,12 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserPhotos(this.nickname).pipe(take(1))
       .subscribe((res: Photo[]) => {
         this.photos = res
-        console.log(this.photos)
       })
   }
 
   findByNickname() {
     this.userService.findByNickname(this.nickname).pipe(take(1),
       tap(res => this.user = res),
-/*      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(
-        tap((data: any) => this.profileImage = 'data:image/jpeg;base64,' + data.imageData)
-      )),*/
       switchMap(() => this.userService.getFollows(this.user.id).pipe(
         tap((data: any) => this.follows = data.follows)
       )),
@@ -74,7 +79,7 @@ export class ProfileComponent implements OnInit {
 
   openModalWithComponent() {
     const initialState: ModalOptions = {
-      class: 'modal-dialog-centered',
+      class: 'modal-dialog-centered modal-lg',
       initialState: {
         title: this.title,
         id: this.user.id
@@ -97,16 +102,13 @@ export class ProfileComponent implements OnInit {
       switchMap(() => this.userService.checkFollowing(this.user.id).pipe(
         tap((data: any) => this.isFollowing = data)
       ))
-      )
+    )
       .subscribe()
   }
 
   findOwnerUser() {
     this.authService.getOwnUser().pipe(take(1),
       tap(res => this.user = res.data),
-/*      switchMap(() => this.userService.getProfileImage(this.user.id).pipe(take(1),
-        tap((data: any) => this.profileImage = 'data:image/jpeg;base64,' + data.imageData)
-      )),*/
       switchMap(() => this.userService.getUserPhotos(this.user.nickname).pipe(take(1),
         tap((data: any) => this.photos = data)
       )),
@@ -125,6 +127,7 @@ export class ProfileComponent implements OnInit {
       initialState: {
         title: this.title,
         user: this.user,
+        isOwner: this.owner,
         photoId: photoId
       }
     };

@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { UserService } from 'src/app/services/user.service';
-import { User } from '../model/user.interface';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BsModalRef} from 'ngx-bootstrap/modal';
+import {UserService} from 'src/app/services/user.service';
 import {debounceTime, filter, fromEvent, switchMap} from "rxjs";
 
 @Component({
@@ -10,13 +9,14 @@ import {debounceTime, filter, fromEvent, switchMap} from "rxjs";
   templateUrl: './modal-edit-profile.component.html',
   styleUrls: ['./modal-edit-profile.component.css'],
 })
-export class ModalEditProfileComponent implements OnInit, AfterViewInit{
+export class ModalEditProfileComponent implements OnInit, AfterViewInit {
 
   title?: string;
   id: string;
   closeBtnName?: string;
   editProfile: FormGroup;
   save = false;
+  base64textString: string;
 
   @ViewChild('nickname') nickname: ElementRef
   @ViewChild('email') email: ElementRef
@@ -25,8 +25,8 @@ export class ModalEditProfileComponent implements OnInit, AfterViewInit{
     public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private userService: UserService
-    ) {
-    }
+  ) {
+  }
 
   ngOnInit() {
     this.editProfile = this.formBuilder.group({
@@ -34,7 +34,8 @@ export class ModalEditProfileComponent implements OnInit, AfterViewInit{
       nickname: [''],
       email: ['', Validators.email],
       password: ['', Validators.minLength(4)],
-    },{updateOn: 'change'})
+      aboutMe: ['', Validators.minLength(4)],
+    }, {updateOn: 'change'})
   }
 
   ngAfterViewInit() {
@@ -69,36 +70,49 @@ export class ModalEditProfileComponent implements OnInit, AfterViewInit{
     const nickname = this.editProfile.get('nickname')
     const email = this.editProfile.get('email')
     const password = this.editProfile.get('password')
+    const about = this.editProfile.get('aboutMe')
 
     if (this.editProfile.invalid) {
       return;
     }
 
-    // TODO comprobar que el nickname sea único y el email IMPLEMENTAR FOTOS
-
-    // TODO Implementar tanto about me como profile picture
-
     const objectToUpdate = {
       id: this.id,
-      name: name.value,
+      name: name?.value,
       nickname: nickname?.value,
       email: email?.value,
-      password: password.value
+      password: password?.value,
+      about: about.value
     }
 
     if (this.editProfile.valid) {
       const user = this.formatUser(objectToUpdate);
 
       this.userService.update(user)
-      .subscribe(() => {
-        this.save = true;
-        this.bsModalRef.hide();
-      })
+        .subscribe(() => {
+          this.save = true;
+          this.bsModalRef.hide();
+        })
     }
   }
 
+  getFile(event) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+
+      reader.onload = this.handleReaderLoaded.bind(this);
+      reader.readAsBinaryString(file);
+      return;
+    }
+  }
+
+  handleReaderLoaded(e) {
+    this.base64textString = btoa(e.target.result);
+  }
+
   formatUser(form) {
-    const formNew: User = {
+    const formNew: any = {
       id: form.id,
     }
     if (form.name) {
@@ -112,6 +126,12 @@ export class ModalEditProfileComponent implements OnInit, AfterViewInit{
     }
     if (form.nickname) {
       formNew.nickname = form.nickname
+    }
+    if (form.about) {
+      formNew.about = form.about
+    }
+    if (this.base64textString) {
+      formNew.photo_path = this.base64textString
     }
     return formNew;
   }
