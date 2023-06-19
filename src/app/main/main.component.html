@@ -1,0 +1,17 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container big-container pt-3">
+  <div class="row d-flex justify-content-center align-items-center">
+    <div class="col-sm-8 col-sm-offset-2">
+      <div class="row">
+
+        <ng-container *ngIf="photos && users.size">
+          <div *ngFor="let photo of photos">
+            <app-photo-user [photo]="photo" [user]="users.get(photo.user_id)"></app-photo-user>
+          </div>
+        </ng-container>
+
+      </div>
+
+    </div>
+  </div>
+</div>

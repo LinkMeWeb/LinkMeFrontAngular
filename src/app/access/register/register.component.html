@@ -1,0 +1,224 @@
+<ng-container>
+  <section class="vh-100 d-flex align-items-center justify-content-center">
+    <div class="container h-75">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-2">
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                    Registrarse
+                  </p>
+
+                  <form
+                    (ngSubmit)="onSubmit()"
+                    [formGroup]="registerForm"
+                    class="mx-1 mx-md-4"
+                  >
+                    <div
+                      class="d-flex flex-row align-items-center"
+                      ngClass="{{
+                        registerForm.get('name')?.invalid &&
+                        registerForm.get('name')?.touched
+                          ? 'mb-2'
+                          : 'mb-4'
+                      }}"
+                    >
+                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Nombre"
+                          formControlName="name"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="
+                        registerForm.get('name')?.invalid &&
+                        registerForm.get('name')?.touched
+                      "
+                      class="mb-2"
+                    >
+                      <div class="text-danger">
+                        El nombre no cumple los requisitos
+                      </div>
+                    </div>
+
+                    <div
+                      class="d-flex flex-row align-items-center"
+                      ngClass="{{
+                        registerForm.get('nickname')?.invalid &&
+                        registerForm.get('nickname')?.touched
+                          ? 'mb-2'
+                          : 'mb-4'
+                      }}"
+                    >
+                      <i class="fas fa-user-pen fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Nickname"
+                          formControlName="nickname"
+                          #nickname
+                        />
+                      </div>
+                    </div>
+                    <p *ngIf="registerForm.get('nickname')?.errors && registerForm.get('nickname')?.errors.exists" class="text-danger mb-2">
+                      El nickname ya existe
+                    </p>
+                    <div
+                      *ngIf="
+                        registerForm.get('nickname')?.invalid &&
+                        registerForm.get('nickname')?.touched
+                      "
+                      class="mb-2"
+                    >
+                      <div class="text-danger">
+                        El nickname no cumple los requisitos
+                      </div>
+                    </div>
+
+                    <div
+                      class="d-flex flex-row align-items-center"
+                      ngClass="{{
+                        registerForm.get('email')?.invalid &&
+                        registerForm.get('email')?.touched
+                          ? 'mb-2'
+                          : 'mb-4'
+                      }}"
+                    >
+                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input
+                          type="email"
+                          placeholder="Email"
+                          class="form-control"
+                          formControlName="email"
+                          #email
+                        />
+                      </div>
+                    </div>
+                    <p *ngIf="registerForm.get('email')?.errors && registerForm.get('email')?.errors.exists" class="text-danger mb-2">
+                      El email ya existe
+                    </p>
+                    <div
+                      *ngIf="
+                        registerForm.get('email')?.invalid &&
+                        registerForm.get('email')?.touched
+                      "
+                      class="mb-2"
+                    >
+                      <div class="text-danger">
+                        El email no cumple los requisitos
+                      </div>
+                    </div>
+                    <div
+                      class="d-flex flex-row align-items-center"
+                      ngClass="{{
+                        registerForm.get('password')?.invalid &&
+                        registerForm.get('password')?.touched
+                          ? 'mb-2'
+                          : 'mb-4'
+                      }}"
+                    >
+                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input
+                          type="password"
+                          placeholder="Contraseña"
+                          class="form-control"
+                          formControlName="password"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="
+                        registerForm.get('password')?.invalid &&
+                        registerForm.get('password')?.touched
+                      "
+                      class="mb-2"
+                    >
+                      <div class="text-danger">La contraseña es requerida</div>
+                    </div>
+
+                    <div
+                      class="d-flex flex-row align-items-center"
+                      ngClass="{{
+                        registerForm.get('repeatPassword')?.invalid &&
+                        registerForm.get('repeatPassword')?.touched
+                          ? 'mb-2'
+                          : 'mb-4'
+                      }}"
+                    >
+                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input
+                          type="password"
+                          placeholder="Contraseña Repetida"
+                          class="form-control"
+                          formControlName="repeatPassword"
+                          #repeatPassword
+                        />
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="
+                        registerForm.get('repeatPassword')?.invalid &&
+                        registerForm.get('repeatPassword')?.touched
+                      "
+                      class="mb-2"
+                    >
+                      <div class="text-danger">La contraseña no coincide</div>
+                    </div>
+
+                    <div class="form-check d-flex justify-content-center mb-2">
+                      <input
+                        class="form-check-input me-2"
+                        name="checked"
+                        type="checkbox"
+                        id="checked"
+                        formControlName="checked"
+                      />
+                      <label class="form-check-label" for="checked">
+                        Acepto todos los <a href="#!">Terminos</a>
+                      </label>
+                    </div>
+                    <div
+                      *ngIf="
+                        registerForm.get('checked')?.invalid &&
+                        registerForm.get('checked')?.touched
+                      "
+                      class="mb-4"
+                    >
+                      <div class="text-danger text-center">Los terminos son obligatorios</div>
+                    </div>
+                    <div
+                      class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
+                    >
+                      <button type="submit" class="btn btn-dark btn-lg">
+                        Register
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div
+                  class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-1 d-flex justify-content-center align-items-center"
+                >
+                  <img
+                    src="assets/imgs/LogoFinal2.png"
+                    class="img-fluid w-50"
+                    alt="Sample image"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>

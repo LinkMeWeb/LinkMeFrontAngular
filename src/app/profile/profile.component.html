@@ -1,0 +1,106 @@
+<div class="container py-5 h-100" *ngIf="this.user && followers >= 0 && follows >= 0">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col col-lg-9 col-xl-12">
+      <div class="card">
+        <div class="rounded-top text-white d-flex flex-row" style="background-color: #cab3a9; height:200px;">
+          <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+            <div>
+                <img [src]="'http://localhost' + user.photo_path" alt="Generic placeholder image"
+                     class="img-fluid img-thumbnail mt-4 ms-3 mb-2 profile-image">
+            </div>
+            <button *ngIf="owner" type="button" class="btn btn-outline-dark mt-2" data-mdb-ripple-color="dark"
+                    style="z-index: 1;" (click)="openModalWithComponent()">
+              Editar Perfil
+            </button>
+            <ng-container *ngIf="!owner">
+              <button *ngIf="!isFollowing" type="button" class="btn btn-outline-dark mt-2" data-mdb-ripple-color="dark"
+                      style="z-index: 1;" (click)="follow()">
+                Seguir
+              </button>
+              <button *ngIf="isFollowing" type="button" class="btn btn-outline-dark mt-2" data-mdb-ripple-color="dark"
+                      style="z-index: 1;" (click)="follow()">
+                Dejar de seguir
+              </button>
+            </ng-container>
+          </div>
+          <div class="ms-2" style="margin-top: 90px;">
+            <h1>{{ user.name | titlecase}}</h1>
+            <h4>{{ "@" + user.nickname | titlecase}}</h4>
+          </div>
+        </div>
+        <div class="p-4 text-black" style="background-color: #f8f9fa;">
+          <div class="d-flex justify-content-end text-center py-1">
+            <div>
+              <p class="mb-1 h5">{{photos && photos.length ? photos.length : 0}}</p>
+              <p class="small text-muted mb-0">Fotos</p>
+            </div>
+            <div class="px-3">
+              <p class="mb-1 h5">{{followers}}</p>
+              <p class="small text-muted mb-0">Seguidores</p>
+            </div>
+            <div>
+              <p class="mb-1 h5">{{follows}}</p>
+              <p class="small text-muted mb-0">Siguiendo</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4 text-black">
+          <div class="mb-5">
+            <!-- <p class="lead fw-normal mb-1">About</p> -->
+            <div *ngIf="user.about.length; else noBiography" class="p-4 text-center" style="background-color: #f8f9fa;">
+              <h5>Biografía</h5>
+              <p class="font-italic mb-1">{{ user.about }}</p>
+            </div>
+            <ng-template #noBiography>
+              <div  class="p-4 text-center" style="background-color: #f8f9fa;">
+                <h5>No hay biografía</h5>
+              </div>
+            </ng-template>
+
+          </div>
+          <ng-container *ngIf="photos && photos.length; else notFotos">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <p class="lead fw-normal mb-0">Fotos recientes</p>
+<!--            <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>-->
+          </div>
+            <div class="row d-flex justify-content-between">
+              <ng-container  *ngFor="let photo of photos">
+                <div class="col-6 mb-3 d-flex rounded-3 justify-content-center align-items-center" (click)="openPhotoModal(photo.id)" style="height: 337px; background: #f8f9fa; width: 49.7%">
+                  <img class="w-100 rounded-3" [src]="'http://localhost' + photo.photo" alt="{{photo.id}}" style="max-height: 337px;">
+                </div>
+              </ng-container >
+            </div>
+          </ng-container>
+
+          <ng-template #notFotos>
+              <div class="d-flex align-items-center justify-content-center" style="background-color: #f8f9fa; height: 400px;">
+                <h2>Este usuario aún no ha subido ninguna imagen</h2>
+              </div>
+          </ng-template>
+
+
+          <!--          <div class="row g-2" (click)="openPhotoModal(1)">
+                      <div class="col mb-2">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
+                             alt="image 1" class="w-100 rounded-3">
+                      </div>
+                      <div class="col mb-2">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
+                             alt="image 1" class="w-100 rounded-3">
+                      </div>
+                    </div>
+                    <div class="row g-2">
+                      <div class="col">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
+                             alt="image 1" class="w-100 rounded-3">
+                      </div>
+                      <div class="col">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
+                             alt="image 1" class="w-100 rounded-3">
+                      </div>
+                    </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

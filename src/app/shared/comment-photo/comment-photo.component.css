@@ -1,0 +1,36 @@
+
+.comment {
+  display: block;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.comment .avatar {
+  width: 35px;
+  height: 35px;
+}
+
+.comment .comment-heading {
+  width: 100%;
+}
+
+.comment .comment-heading .user {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-right: 10px;
+}
+
+.comment .comment-heading .time {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 0;
+}
+
+.comment .comment-body {
+  margin-left: 50px;
+}
+
+.comment > .comments-list {
+  margin-left: 50px;
+}

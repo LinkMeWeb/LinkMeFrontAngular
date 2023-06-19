@@ -1,0 +1,30 @@
+<ng-container *ngIf="user !== null">
+  <div class="d-flex justify-content-between align-items-center pt-3 nav">
+    <div class="navigation" routerLink="">
+      <div class="logo">
+        <a class="no-underline"> LinkMe </a>
+      </div>
+    </div>
+
+    <app-search-input></app-search-input>
+
+    <div>
+      <span routerLink="/likedPhotos" class="navigation-link notifica">
+        <i class="far fa-heart"></i>
+      </span>
+      <span class="navigation-link" (click)="uploadPhoto()">
+        <i class="far fa-square-plus"></i>
+      </span>
+      <span routerLink="/profile" class="navigation-link">
+        <i class="far fa-user-circle"></i>
+      </span>
+      <span
+        (click)="logout()"
+        id="signout"
+        class="navigation-link"
+      >
+        <i class="fas fa-sign-out-alt"></i>
+      </span>
+    </div>
+  </div>
+</ng-container>
