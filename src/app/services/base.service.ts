@@ -1,5 +1,4 @@
-import { HttpHeaders } from '@angular/common/http';
-import {PhotoService} from "./photo.service";
+import {HttpHeaders} from '@angular/common/http';
 import {Injectable} from "@angular/core";
 
 @Injectable({
@@ -16,10 +15,6 @@ export class BaseService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     })
   };
-
-  getBase() {
-    return this.httpOptions
-  }
 
   updateAuthorizationHeader(token: string) {
     this.httpOptions = {
